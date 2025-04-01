@@ -1,0 +1,42 @@
+name: Deploy Pulumi Stack
+
+on:
+  push:
+    branches:
+      - main  # or change to your default branch
+  workflow_dispatch:
+
+jobs:
+  pulumi-deploy:
+    name: Pulumi Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: |
+          cd ppinfra
+          npm install
+
+      - name: Install Pulumi CLI
+        uses: pulumi/setup-pulumi@v3
+
+      - name: Login to Pulumi
+        env:
+          PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
+        run: pulumi login
+
+      - name: Select stack
+        run: pulumi stack select dev
+        working-directory: ppinfra
+
+      - name: Deploy infrastructure
+        run: pulumi up --yes
+        working-directory: ppinfra
