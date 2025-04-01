@@ -21,7 +21,6 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-        working-directory: ppinfra
 
       - name: Install Pulumi CLI
         uses: pulumi/setup-pulumi@v2
@@ -30,12 +29,9 @@ jobs:
         env:
           PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
         run: pulumi login
-        working-directory: ppinfra
 
       - name: Select stack
         run: pulumi stack select dev
-        working-directory: ppinfra
 
       - name: Deploy infrastructure
         run: pulumi up --yes
-        working-directory: ppinfra
