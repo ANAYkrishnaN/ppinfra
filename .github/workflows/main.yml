@@ -3,12 +3,11 @@ name: Deploy Pulumi Stack
 on:
   push:
     branches:
-      - main  # or change to your default branch
+      - main
   workflow_dispatch:
 
 jobs:
   pulumi-deploy:
-    name: Pulumi Deploy
     runs-on: ubuntu-latest
 
     steps:
@@ -21,9 +20,8 @@ jobs:
           node-version: '18'
 
       - name: Install dependencies
-        run: |
-          cd ppinfra
-          npm install
+        run: npm install
+        working-directory: ppinfra
 
       - name: Install Pulumi CLI
         uses: pulumi/setup-pulumi@v2
@@ -32,6 +30,7 @@ jobs:
         env:
           PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
         run: pulumi login
+        working-directory: ppinfra
 
       - name: Select stack
         run: pulumi stack select dev
