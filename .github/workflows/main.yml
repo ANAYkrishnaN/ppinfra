@@ -26,7 +26,7 @@ jobs:
           npm install
 
       - name: Install Pulumi CLI
-        uses: pulumi/setup-pulumi@v3
+        uses: pulumi/setup-pulumi@v2
 
       - name: Login to Pulumi
         env:
